@@ -161,7 +161,7 @@ export default function Products() {
 
         {/* Размеры */}
         <div>
-          <h4>Размеры:</h4>
+          <h4>Масштаб:</h4>
           {newProduct.scales.map((scale, i) => (
             <div key={i}>
               <input
@@ -187,7 +187,7 @@ export default function Products() {
               setNewProduct({ ...newProduct, scales: [...newProduct.scales, ""] })
             }
           >
-            ➕ Добавить размер
+            ➕ Добавить масштаб
           </button>
         </div>
 
@@ -310,7 +310,7 @@ export default function Products() {
 
             {/* Размеры */}
             <div>
-              <h4>Размеры:</h4>
+              <h4>Масштаб:</h4>
               {p.scales?.map((scale, i) => (
                 <div key={i}>
                   <input
@@ -336,7 +336,7 @@ export default function Products() {
                   updateArrayField(p.id, "scales", [...(p.scales || []), ""])
                 }
               >
-                ➕ Добавить размер
+                ➕ Добавить масштаб
               </button>
             </div>
 
