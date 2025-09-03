@@ -10,7 +10,9 @@ export default function Products() {
     image_url: "",
     colors: [],
     scales: [],
-    media: [], // новое поле для медиа
+    media: [],
+    size: "",
+    material: "",
   });
 
   useEffect(() => {
@@ -36,7 +38,9 @@ export default function Products() {
           image_url: newProduct.image_url,
           colors: newProduct.colors,
           scales: newProduct.scales,
-          media: newProduct.media, // сохраняем медиа
+          media: newProduct.media,
+          size: newProduct.size,
+          material: newProduct.material,
         },
       ]);
       if (error) throw error;
@@ -125,6 +129,16 @@ export default function Products() {
           onChange={(e) =>
             setNewProduct({ ...newProduct, image_url: e.target.value })
           }
+        />
+        <input
+          placeholder="Размер"
+          value={newProduct.size}
+          onChange={(e) => setNewProduct({ ...newProduct, size: e.target.value })}
+        />
+        <input
+          placeholder="Материал"
+          value={newProduct.material}
+          onChange={(e) => setNewProduct({ ...newProduct, material: e.target.value })}
         />
 
         {/* Цвета */}
@@ -274,6 +288,18 @@ export default function Products() {
               value={p.image_url || ""}
               onChange={(e) => updateProduct(p.id, "image_url", e.target.value)}
               placeholder="URL картинки"
+            />
+            <br />
+            <input
+              value={p.size || ""}
+              onChange={(e) => updateProduct(p.id, "size", e.target.value)}
+              placeholder="Размер"
+            />
+            <br />
+            <input
+              value={p.material || ""}
+              onChange={(e) => updateProduct(p.id, "material", e.target.value)}
+              placeholder="Материал"
             />
 
             {/* Цвета */}
