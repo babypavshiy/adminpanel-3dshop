@@ -10,6 +10,7 @@ export default function Products() {
     image_url: "",
     colors: [],
     scales: [],
+    media: [], // новое поле для медиа
   });
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Products() {
           image_url: newProduct.image_url,
           colors: newProduct.colors,
           scales: newProduct.scales,
+          media: newProduct.media, // сохраняем медиа
         },
       ]);
       if (error) throw error;
@@ -46,6 +48,7 @@ export default function Products() {
         image_url: "",
         colors: [],
         scales: [],
+        media: [],
       });
       fetchProducts();
     } catch (e) {
@@ -56,7 +59,6 @@ export default function Products() {
   const updateProduct = async (id, field, value) => {
     try {
       let parsedValue = value;
-
       if (field === "price") parsedValue = Number(value);
 
       const { error } = await supabase
@@ -125,6 +127,7 @@ export default function Products() {
           }
         />
 
+        {/* Цвета */}
         <div>
           <h4>Цвета:</h4>
           {newProduct.colors.map((color, i) => (
@@ -156,6 +159,7 @@ export default function Products() {
           </button>
         </div>
 
+        {/* Размеры */}
         <div>
           <h4>Размеры:</h4>
           {newProduct.scales.map((scale, i) => (
@@ -184,6 +188,54 @@ export default function Products() {
             }
           >
             ➕ Добавить размер
+          </button>
+        </div>
+
+        {/* Медиа */}
+        <div>
+          <h4>Медиа:</h4>
+          {newProduct.media.map((m, i) => (
+            <div key={i} style={{ display: "flex", gap: "5px", marginBottom: "5px" }}>
+              <input
+                placeholder="URL медиа"
+                value={m.url}
+                onChange={(e) => {
+                  const arr = [...newProduct.media];
+                  arr[i].url = e.target.value;
+                  setNewProduct({ ...newProduct, media: arr });
+                }}
+              />
+              <select
+                value={m.type}
+                onChange={(e) => {
+                  const arr = [...newProduct.media];
+                  arr[i].type = e.target.value;
+                  setNewProduct({ ...newProduct, media: arr });
+                }}
+              >
+                <option value="image">Image</option>
+                <option value="gif">GIF</option>
+                <option value="video">Video</option>
+              </select>
+              <button
+                onClick={() => {
+                  const arr = newProduct.media.filter((_, idx) => idx !== i);
+                  setNewProduct({ ...newProduct, media: arr });
+                }}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() =>
+              setNewProduct({
+                ...newProduct,
+                media: [...newProduct.media, { url: "", type: "image" }],
+              })
+            }
+          >
+            ➕ Добавить медиа
           </button>
         </div>
 
@@ -224,6 +276,7 @@ export default function Products() {
               placeholder="URL картинки"
             />
 
+            {/* Цвета */}
             <div>
               <h4>Цвета:</h4>
               {p.colors?.map((color, i) => (
@@ -247,12 +300,15 @@ export default function Products() {
                 </div>
               ))}
               <button
-                onClick={() => updateArrayField(p.id, "colors", [...(p.colors || []), ""])}
+                onClick={() =>
+                  updateArrayField(p.id, "colors", [...(p.colors || []), ""])
+                }
               >
                 ➕ Добавить цвет
               </button>
             </div>
 
+            {/* Размеры */}
             <div>
               <h4>Размеры:</h4>
               {p.scales?.map((scale, i) => (
@@ -276,9 +332,55 @@ export default function Products() {
                 </div>
               ))}
               <button
-                onClick={() => updateArrayField(p.id, "scales", [...(p.scales || []), ""])}
+                onClick={() =>
+                  updateArrayField(p.id, "scales", [...(p.scales || []), ""])
+                }
               >
                 ➕ Добавить размер
+              </button>
+            </div>
+
+            {/* Медиа */}
+            <div>
+              <h4>Медиа:</h4>
+              {p.media?.map((m, i) => (
+                <div key={i} style={{ display: "flex", gap: "5px", marginBottom: "5px" }}>
+                  <input
+                    value={m.url}
+                    onChange={(e) => {
+                      const arr = [...p.media];
+                      arr[i].url = e.target.value;
+                      updateArrayField(p.id, "media", arr);
+                    }}
+                  />
+                  <select
+                    value={m.type}
+                    onChange={(e) => {
+                      const arr = [...p.media];
+                      arr[i].type = e.target.value;
+                      updateArrayField(p.id, "media", arr);
+                    }}
+                  >
+                    <option value="image">Image</option>
+                    <option value="gif">GIF</option>
+                    <option value="video">Video</option>
+                  </select>
+                  <button
+                    onClick={() => {
+                      const arr = p.media.filter((_, idx) => idx !== i);
+                      updateArrayField(p.id, "media", arr);
+                    }}
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={() =>
+                  updateArrayField(p.id, "media", [...(p.media || []), { url: "", type: "image" }])
+                }
+              >
+                ➕ Добавить медиа
               </button>
             </div>
 
